@@ -25,41 +25,38 @@ impl NumberFromString {
 
         if bytes.len() >= 3 {
             let bytes_to_check = &bytes[0..3];
-            if bytes_to_check == one { return Some(b'1') }
-            if bytes_to_check == two { return Some(b'2') }
-            if bytes_to_check == six { return Some(b'6') }
+            if bytes_to_check == one { return Some(b'1'); }
+            if bytes_to_check == two { return Some(b'2'); }
+            if bytes_to_check == six { return Some(b'6'); }
 
             if bytes.len() >= 4 {
                 let bytes_to_check = &bytes[0..4];
-                if bytes_to_check == four { return Some(b'4') }
-                if bytes_to_check == five { return Some(b'5') }
-                if bytes_to_check == nine { return Some(b'9') }
+                if bytes_to_check == four { return Some(b'4'); }
+                if bytes_to_check == five { return Some(b'5'); }
+                if bytes_to_check == nine { return Some(b'9'); }
 
                 if bytes.len() >= 5 {
                     let bytes_to_check = &bytes[0..5];
-                    if bytes_to_check == three { return Some(b'3') }
-                    if bytes_to_check == seven { return Some(b'7') }
-                    if bytes_to_check == eight { return Some(b'8') }
+                    if bytes_to_check == three { return Some(b'3'); }
+                    if bytes_to_check == seven { return Some(b'7'); }
+                    if bytes_to_check == eight { return Some(b'8'); }
                 }
             }
         }
 
-        return None
+        None
     }
 }
 
 fn part_one(lines: Lines<BufReader<File>>) {
     let mut numbers: Vec<i32> = Vec::new();
 
-    for line in lines {
-        if let Ok(input) = line {
-            let digits: Vec<u8> = input.as_bytes().iter()
-                .filter(|f| f.is_ascii_digit())
-                .map(|f| u8::from(*f))
-                .collect();
+    for line in lines.flatten() {
+        let digits: Vec<u8> = line.as_bytes().iter()
+            .filter(|f| f.is_ascii_digit()).copied()
+            .collect();
 
-            numbers.push(get_first_and_last_digits(Box::new(digits)));
-        }
+        numbers.push(get_first_and_last_digits(digits));
     }
 
     println!("Day one - Part one: {}", numbers.into_iter().sum::<i32>());
@@ -68,30 +65,28 @@ fn part_one(lines: Lines<BufReader<File>>) {
 fn part_two(lines: Lines<BufReader<File>>) {
     let mut numbers: Vec<i32> = Vec::new();
 
-    for line in lines {
-        if let Ok(input) = line {
-            let line_bytes = input.as_bytes().clone();
+    for line in lines.flatten() {
+        let line_bytes = line.as_bytes();
 
-            let digits: Vec<u8> = input.as_bytes().iter().enumerate().map(|(i, b)| {
-                if b.is_ascii_digit() {
-                    return line_bytes[i]
-                }
+        let digits: Vec<u8> = line.as_bytes().iter().enumerate().map(|(i, b)| {
+            if b.is_ascii_digit() {
+                return line_bytes[i];
+            }
 
-                if let Some(digit) = NumberFromString::potential_number(&line_bytes[i..line_bytes.len()]) {
-                    return u8::from(digit)
-                }
+            if let Some(digit) = NumberFromString::potential_number(&line_bytes[i..line_bytes.len()]) {
+                return digit;
+            }
 
-                return b' '
-            }).filter(|b| b != &b' ').collect();
+            b' '
+        }).filter(|b| b != &b' ').collect();
 
-            numbers.push(get_first_and_last_digits(Box::new(digits)));
-        }
+        numbers.push(get_first_and_last_digits(digits));
     }
 
     println!("Day one - part two: {}", numbers.into_iter().sum::<i32>())
 }
 
-fn get_first_and_last_digits(digits: Box<Vec<u8>>) -> i32 {
+fn get_first_and_last_digits(digits: Vec<u8>) -> i32 {
     let first_digit = String::from_utf8(Vec::from(&[*digits.first().unwrap()])).unwrap();
     let last_digit = if digits.len() < 2 {
         first_digit.clone()
