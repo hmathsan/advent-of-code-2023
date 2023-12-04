@@ -4,12 +4,14 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
-pub fn run_day_three_challenge() {
+pub fn main() {
+    println!("Day three challenge can be found in https://adventofcode.com/2023/day/3");
+    println!("Solutions:");
+    println!();
+
     let file_path = "C:\\Users\\mathe\\Documentos\\source\\advent-of-code-2023\\src\\day-three-input.txt";
 
-    println!("Day three - Part one:");
     part_one(file_path);
-    println!("\nDay three - Part two:");
     part_two(file_path);
 }
 

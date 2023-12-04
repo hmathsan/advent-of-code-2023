@@ -2,7 +2,11 @@ use std::fs::File;
 use std::io::{BufRead, BufReader, Lines};
 use std::str::FromStr;
 
-pub fn run_day_one_challenge() {
+pub fn main() {
+    println!("Day one challenge can be found in https://adventofcode.com/2023/day/1");
+    println!("Solutions:");
+    println!();
+
     let file_path = "C:\\Users\\mathe\\Documentos\\source\\advent-of-code-2023\\src\\day-one-input.txt";
 
     part_one(BufReader::new(File::open(file_path).unwrap()).lines());

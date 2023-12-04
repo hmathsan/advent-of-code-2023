@@ -6,7 +6,11 @@ const MAX_RED: u32 = 12;
 const MAX_GREEN: u32 = 13;
 const MAX_BLUE: u32 = 14;
 
-pub fn run_day_two_challenge() {
+pub fn main() {
+    println!("Day two challenge can be found in https://adventofcode.com/2023/day/2");
+    println!("Solutions:");
+    println!();
+
     let file_path = "C:\\Users\\mathe\\Documentos\\source\\advent-of-code-2023\\src\\day-two-input.txt";
 
     let mut games_sum: u32 = 0;
