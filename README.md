@@ -18,5 +18,5 @@ Having [Rust and Cargo installed](https://www.rust-lang.org) run each challenge 
 the command:
 
 ```shell
-cargo run --bin day_one
+cargo run --challenges day_one
 ```

@@ -1,16 +1,15 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader, Lines};
 use std::str::FromStr;
 
-pub fn main() {
+pub fn execute_solution() {
     println!("Day one challenge can be found in https://adventofcode.com/2023/day/1");
     println!("Solutions:");
     println!();
 
-    let file_path = "C:\\Users\\mathe\\Documentos\\source\\advent-of-code-2023\\src\\day-one-input.txt";
+    let file_str = include_str!("..\\input\\day-one-input.txt");
 
-    part_one(BufReader::new(File::open(file_path).unwrap()).lines());
-    part_two(BufReader::new(File::open(file_path).unwrap()).lines());
+    let lines = file_str.lines().map(String::from);
+    println!("Day one - Part one: {}", part_one(lines.clone().collect()));
+    println!("Day one - part two: {}", part_two(lines.clone().collect()));
 }
 
 struct NumberFromString;
@@ -52,10 +51,10 @@ impl NumberFromString {
     }
 }
 
-fn part_one(lines: Lines<BufReader<File>>) {
+fn part_one(lines: Vec<String>) -> i32 {
     let mut numbers: Vec<i32> = Vec::new();
 
-    for line in lines.flatten() {
+    for line in lines {
         let digits: Vec<u8> = line.as_bytes().iter()
             .filter(|f| f.is_ascii_digit()).copied()
             .collect();
@@ -63,13 +62,13 @@ fn part_one(lines: Lines<BufReader<File>>) {
         numbers.push(get_first_and_last_digits(digits));
     }
 
-    println!("Day one - Part one: {}", numbers.into_iter().sum::<i32>());
+    numbers.into_iter().sum::<i32>()
 }
 
-fn part_two(lines: Lines<BufReader<File>>) {
+fn part_two(lines: Vec<String>) -> i32 {
     let mut numbers: Vec<i32> = Vec::new();
 
-    for line in lines.flatten() {
+    for line in lines {
         let line_bytes = line.as_bytes();
 
         let digits: Vec<u8> = line.as_bytes().iter().enumerate().map(|(i, b)| {
@@ -87,7 +86,7 @@ fn part_two(lines: Lines<BufReader<File>>) {
         numbers.push(get_first_and_last_digits(digits));
     }
 
-    println!("Day one - part two: {}", numbers.into_iter().sum::<i32>())
+    numbers.into_iter().sum::<i32>()
 }
 
 fn get_first_and_last_digits(digits: Vec<u8>) -> i32 {
@@ -99,4 +98,34 @@ fn get_first_and_last_digits(digits: Vec<u8>) -> i32 {
     };
 
     i32::from_str(&format!("{}{}", first_digit, last_digit)[..]).unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::challenges::day_one::{part_one, part_two};
+
+    // string inputs provided by AoC examples
+
+    const PART_ONE_INPUT_STR: &str = r#"1abc2
+        pqr3stu8vwx
+        a1b2c3d4e5f
+        treb7uchet"#;
+
+    const PART_TWO_INPUT_STR: &str = r#"two1nine
+        eightwothree
+        abcone2threexyz
+        xtwone3four
+        4nineeightseven2
+        zoneight234
+        7pqrstsixteen"#;
+
+    #[test]
+    fn should_return_part_one_correctly() {
+        assert_eq!(part_one(PART_ONE_INPUT_STR.lines().map(String::from).collect()), 142)
+    }
+
+    #[test]
+    fn should_return_part_two_correctly() {
+        assert_eq!(part_two(PART_TWO_INPUT_STR.lines().map(String::from).collect()), 281);
+    }
 }

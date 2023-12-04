@@ -1,23 +1,21 @@
 #![allow(clippy::ptr_arg)]
 
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
-pub fn main() {
+pub fn execute_solution() {
     println!("Day three challenge can be found in https://adventofcode.com/2023/day/3");
     println!("Solutions:");
     println!();
 
-    let file_path = "C:\\Users\\mathe\\Documentos\\source\\advent-of-code-2023\\src\\day-three-input.txt";
+    let file_str = include_str!("..\\input\\day-three-input.txt");
 
-    part_one(file_path);
-    part_two(file_path);
+    let lines = file_str.lines().map(String::from).collect::<Vec<String>>();
+
+    println!("Sum of part numbers: {}", part_one(lines.clone()));
+    println!("Sum of gears: {}", part_two(lines));
 }
 
-fn part_two(file_path: &str) {
-    let lines: Vec<String> = BufReader::new(File::open(file_path).unwrap()).lines().flatten().collect();
-
+fn part_two(lines: Vec<String>) -> u32 {
     let mut gears: u32 = 0;
 
     for (i, line) in lines.iter().enumerate() {
@@ -63,12 +61,10 @@ fn part_two(file_path: &str) {
         }
     }
 
-    println!("Sum of gears: {}", gears);
+    gears
 }
 
-fn part_one(file_path: &str) {
-    let lines: Vec<String> = BufReader::new(File::open(file_path).unwrap()).lines().flatten().collect();
-
+fn part_one(lines: Vec<String>) -> u32 {
     let mut sum_of_part_numbers = 0;
     let mut previous_indexes: Vec<u32> = Vec::new();
 
@@ -109,8 +105,7 @@ fn part_one(file_path: &str) {
         }
     }
 
-    println!("Sum of part numbers: {}", sum_of_part_numbers)
-
+    sum_of_part_numbers
 }
 
 fn is_valid_to_sum(line_to_check: Vec<char>, indexes_to_validate: &Vec<u32>, is_other_line: bool) -> bool {
@@ -122,7 +117,7 @@ fn is_valid_to_sum(line_to_check: Vec<char>, indexes_to_validate: &Vec<u32>, is_
             let ch = line_to_check[usize::try_from(*i).unwrap()];
 
             if !ch.is_ascii_digit() && ch != '.' {
-                return true
+                return true;
             }
         }
     }
@@ -132,7 +127,7 @@ fn is_valid_to_sum(line_to_check: Vec<char>, indexes_to_validate: &Vec<u32>, is_
             let previous_char = line_to_check[i - 1];
 
             if !previous_char.is_ascii_digit() && previous_char != '.' {
-                return true
+                return true;
             }
         }
 
@@ -140,7 +135,7 @@ fn is_valid_to_sum(line_to_check: Vec<char>, indexes_to_validate: &Vec<u32>, is_
             let next_char: char = line_to_check[i + 1];
 
             if !next_char.is_ascii_digit() && next_char != '.' {
-                return true
+                return true;
             }
         }
     }
@@ -150,7 +145,7 @@ fn is_valid_to_sum(line_to_check: Vec<char>, indexes_to_validate: &Vec<u32>, is_
 
 fn check_previous_chars(chars: &Vec<char>, j: usize) -> Option<u32> {
     if j > 0 && chars[j - 1].is_ascii_digit() {
-        return Some(get_part_number(chars.clone(), j - 1).0)
+        return Some(get_part_number(chars.clone(), j - 1).0);
     }
 
     None
@@ -158,7 +153,7 @@ fn check_previous_chars(chars: &Vec<char>, j: usize) -> Option<u32> {
 
 fn check_next_chars(chars: &Vec<char>, j: usize) -> Option<u32> {
     if j < chars.len() - 1 && chars[j + 1].is_ascii_digit() {
-        return Some(get_part_number(chars.clone(), j + 1).0)
+        return Some(get_part_number(chars.clone(), j + 1).0);
     }
 
     None
@@ -211,4 +206,35 @@ fn check_other_line(line: Vec<char>, j: usize) -> (u32, u32) {
     }
 
     (gears_found, line_total)
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::challenges::day_three::{part_one, part_two};
+
+    const INPUT_STR: &str = r#"12.......*..
++.........34
+.......-12..
+..78........
+..*....60...
+78.........9
+.5.....23..$
+8...90*12...
+............
+2.2......12.
+.*.........*
+1.1..503+.56"#;
+
+    // Input from Reddit(https://www.reddit.com/r/adventofcode/comments/189q9wv/2023_day_3_another_sample_grid_to_use/)
+    // covers a lot more test cases than the example from AoC
+
+    #[test]
+    fn should_return_part_one_correctly() {
+        assert_eq!(part_one(INPUT_STR.lines().map(String::from).collect()), 925);
+    }
+
+    #[test]
+    fn should_return_part_two_correctly() {
+        assert_eq!(part_two(INPUT_STR.lines().map(String::from).collect()), 6756);
+    }
 }
