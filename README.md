@@ -4,8 +4,12 @@ My solutions for this year Advent of Code challenges written in Rust.
 
 ## Running the project
 
-Each day of the challenge is separated in the `bin` folder so that each of them can be 
-executed separately.
+Each day of challenge is inside the folder `challenges` and the inputs 
+provided for me by the AoC site for each day is inside the folder `input`.
+
+Running the project will consume the inputs from the `input` folder.
+Running the tests will consume the strings in each test, those strings
+are the examples provided in the AoC challenge.
 
 Firstly clone the project:
 
@@ -14,9 +18,15 @@ Firstly clone the project:
 > cd  advent-of-code-2023
 ```
 
-Having [Rust and Cargo installed](https://www.rust-lang.org) run each challenge using
-the command:
+Having [Rust and Cargo installed](https://www.rust-lang.org) run 
+using the command:
 
 ```shell
-cargo run --challenges day_one
+> cargo run
+```
+
+And the tests:
+
+```shell
+> cargo test
 ```
