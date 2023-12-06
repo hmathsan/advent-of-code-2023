@@ -2,6 +2,7 @@ mod day_one;
 mod day_two;
 mod day_three;
 mod day_four;
+mod day_five;
 
 pub fn run_all_challenges() {
     println!("<=================>");
@@ -12,4 +13,6 @@ pub fn run_all_challenges() {
     day_three::execute_solution();
     println!("<=================>");
     day_four::execute_solution();
+    println!("<=================>");
+    day_five::execute_solution();
 }
